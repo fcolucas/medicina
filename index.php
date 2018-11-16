@@ -48,11 +48,11 @@
 				<div class="form-group">
 					<input type="password" class="form-control red" id="campo_senha" name="senha" placeholder="Senha" style="width: 176px; height: 39px;" />
 				</div>
-				<button type="buttom" class="btn btn-primary" id="btn_login">Entrar</button>			
+				<button type="buttom" class="btn btn-primary" name="btn" id="btn_login">Entrar</button>			
 			</form>
 			<?php
 				if($erro == 1){
-					echo '<font color="#FF0000">Usuário e ou senha inválido(s)</font>';
+					echo '<font color="#FF0000">Usuário e/ou senha inválido(s)</font>';
 				}
 			?>
 		</form>
