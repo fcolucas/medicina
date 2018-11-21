@@ -34,7 +34,7 @@
 		          <ul class="nav navbar-nav navbar-right">
 		          	<li><a href="cadastroPacientes.html">Cadastrar Paciente</a></li>
 		          	<li><a href="listaPacientes.php">Listar Pacientes</a></li>
-		          	<li><a href="index.php">Editar Perfil</a></li>
+		          	<li><a href="criarReceituario.php">Criar Receituário</a></li>
 		            <li><a href="?Sair=1">Sair</a></li>
 		            	<?php	
 						if(isset($_GET['Sair']) && $_GET['Sair']==1){

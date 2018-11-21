@@ -18,7 +18,7 @@ require_once('db.class.php');
 		else header('Location: index.php');
 
 		$buscar = $_POST['buscar'];
-		$result_pacientes = "SELECT * FROM pacientes WHERE nomePaciente LIKE '%$buscar%' LIMIT 5";
+		$result_pacientes = "SELECT * FROM pacientes WHERE (medicos_idmedicos = $_SESSION['idmedicos'])";
 		
 		$objDb = new db();
 		$link = $objDb->conecta_mysql();
