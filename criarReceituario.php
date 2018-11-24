@@ -19,6 +19,7 @@
 
 		<!-- bootstrap - link cdn -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	
 	</head>
 
@@ -34,7 +35,7 @@
 		        
 		        <div id="navbar" class="navbar-collapse collapse">
 		          <ul class="nav navbar-nav navbar-right">
-		          	<li><a href="cadastroPacientes.html">Cadastrar Paciente</a></li>
+		          	<li><a href="cadastroPacientes.php">Cadastrar Paciente</a></li>
 		          	<li><a href="listaPacientes.php">Listar Pacientes</a></li>
 		          	<li><a href="criarReceituario.php">Criar Receituário</a></li>
 		            <li><a href="?Sair=1">Sair</a></li>
@@ -53,17 +54,16 @@
 
 	    <div class="container">
 	    	
-	    	<br /> <br />
-	    	
+	    	<br />
 	    	<div class="col-md-4"></div>
-	    	<div class="col-md-4">
+	    	<div>
 	    		<h2>Receituário</h2>
 	    		<br />
-				<form method="post" action="criarReceituario.php" id="criaReceituario">
+				<form method="post" action="receituario.php" id="criaReceituario">
 					<div class="form-group">
 						Nome do Paciente:
 						<select name="nomePaciente" class="form-control">
-							<option>Selecione Paciente...</option>
+							<option>Selecione o Paciente...</option>
 							<?php
 							$idmedico = $_SESSION['idmedicos'];
 							$result_pacientes = "SELECT * FROM pacientes WHERE medicos_idmedicos = $idmedico";
@@ -71,28 +71,99 @@
 							$link = $objDb->conecta_mysql();
 							$res_pacientes = mysqli_query($link, $result_pacientes) or die("Erro na consulta!");
 							while($row_pacientes = mysqli_fetch_assoc($res_pacientes)){ ?>
-							<option value="<?= $row_pacientes['idpacientes']; ?>"> <?= $row_pacientes['nomePaciente']; ?></option> <?php
-						}
-					?>
+							<option value="<?= $row_pacientes['idpacientes']; ?>"> <?= $row_pacientes['nomePaciente']; ?></option> <?php } ?>
 						</select>
 					</div>
-					<!-- Parte a ser mudada!! -->
-					<div class="form-group">
-						Data de Nascimento: <input type="date" class="form-control" name="dataNascimento" >
-					</div>
 
-					<div class="form-group">
-						Sexo:
-						<input type="radio" name="sexo" value="M" />Masculino
-						<input type="radio" name="sexo" value="F" />Feminino <br/>
+					<div id='corpoReceita'>
+						<table>
+							<div>
+								<tr>
+									<th> Medicamento </th>
+									<th> Dosagem </th>
+									<th> Intervalo </th>
+									<th> Tipo de Intervalo </th>
+								</tr>
+							</div>
+							<div id='formMedic'>
+								<div class="form-group">
+								<tr>
+									<td>
+										<select name="nomeMedicamento" class="form-control">
+										<option>Selecione o medicamento...</option>
+										<?php
+											$result_remedios = "SELECT * FROM medicamentos";
+											$res = mysqli_query($link, $result_remedios) or die("Erro na consulta!");
+											while($row_remedios = mysqli_fetch_assoc($res)){ ?>
+												<option value="<?= $row_remedios['idmedicamentos']; ?>"> <?= $row_remedios['nomeMedicamento']; ?></option> <?php } ?>
+										</select> 
+									</td>
+
+									<td>
+										<input type="text" class="form-control" name="dosagem" placeholder="Digite a dosagem">
+									</td>
+
+									<td>
+										<input type="text" class="form-control" name="intervalo" placeholder="Digite o intervalo de medicação">
+									</td>
+
+									<td>
+										<select name="tipoIntervalo" class="form-control">
+											<option>Selecione o tipo de intervalo...</option>
+											<option>minutos</option>
+											<option>horas</option>
+											<option>dias</option>
+											<option>senamas</option>
+										</select>
+									</td>
+								</tr> </div>
+							</div>
+						</table>
 					</div>
-					
+					<button type="button" class="btn btn-primary" id="add_campo"> + </button>
+
 					<button type="submit" class="btn btn-primary" name="btn_cadastra">Cadastrar</button>
 					<button type="submit" class="btn btn-primary" name="btn_cancela">Cancelar</button>
 					<!-- Parte a ser mudada!! -->
 
 				</form>
+				<script>
+					//https://api.jquery.com/click/
+            		$("#add_campo").click(function () {
+					//https://api.jquery.com/append/
+                		$("#formMedic").append('<div class="form-group"> <table>'+ 
+								'<tr>' +
+									'<td>'+
+										'<select name="nomeMedicamento" class="form-control">'+
+										'<option>Selecione o medicamento...</option>'+
+										'<?php
+											$result_remedios = "SELECT * FROM medicamentos";
+											$res = mysqli_query($link, $result_remedios) or die("Erro na consulta!");
+											while($row_remedios = mysqli_fetch_assoc($res)){ ?>
+												<option value="<?= $row_remedios['idmedicamentos']; ?>"> <?= $row_remedios['nomeMedicamento']; ?></option> <?php } ?>'+
+										'</select>'+ 
+									'</td>'+
+
+									'<td>'+
+										'<input type="text" class="form-control" name="dosagem" placeholder="Digite a dosagem">'+
+									'</td>'+
+
+									'<td>'+
+										'<input type="text" class="form-control" name="intervalo" placeholder="Digite o intervalo de medicação">'+
+									'</td>'+
+
+									'<td>'+
+										'<select name="tipoIntervalo" class="form-control">'+
+											'<option>Selecione o tipo de intervalo...</option>'+
+											'<option>minutos</option>'+
+											'<option>horas</option>' +
+											'<option>dias</option>' +
+											'<option>senamas</option>'+
+										'</select>'+
+									'</td>'+
+								'</tr> </table> </div>');
+            		});
+				</script>
 			</div>
-	
 	</body>
 </html>
