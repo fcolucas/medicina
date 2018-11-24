@@ -59,10 +59,10 @@
 	    	<div>
 	    		<h2>Receituário</h2>
 	    		<br />
-				<form method="post" action="receituario.php" id="criaReceituario">
+				<form method="post" action="validaReceituario.php" id="criaReceituario">
 					<div class="form-group">
 						Nome do Paciente:
-						<select name="nomePaciente" class="form-control">
+						<select name="idPaciente" class="form-control">
 							<option>Selecione o Paciente...</option>
 							<?php
 							$idmedico = $_SESSION['idmedicos'];
@@ -76,39 +76,36 @@
 					</div>
 
 					<div id='corpoReceita'>
-						<table>
-							<div>
+						<table id='receituario'>
 								<tr>
 									<th> Medicamento </th>
 									<th> Dosagem </th>
 									<th> Intervalo </th>
 									<th> Tipo de Intervalo </th>
+									<th></th>
 								</tr>
-							</div>
-							<div id='formMedic'>
-								<div class="form-group">
 								<tr>
 									<td>
-										<select name="nomeMedicamento" class="form-control">
+										<select name="idMedicamento[]" class="form-control">
 										<option>Selecione o medicamento...</option>
 										<?php
 											$result_remedios = "SELECT * FROM medicamentos";
 											$res = mysqli_query($link, $result_remedios) or die("Erro na consulta!");
-											while($row_remedios = mysqli_fetch_assoc($res)){ ?>
-												<option value="<?= $row_remedios['idmedicamentos']; ?>"> <?= $row_remedios['nomeMedicamento']; ?></option> <?php } ?>
+											while($row_remedios = mysqli_fetch_array($res)){ ?>
+												<option value='<?= $row_remedios['idmedicamentos']; ?>'> <?= $row_remedios['nomeMedicamento']; ?></option> <?php } ?>
 										</select> 
 									</td>
 
 									<td>
-										<input type="text" class="form-control" name="dosagem" placeholder="Digite a dosagem">
+										<input type="text" class="form-control" name="dosagem[]" placeholder="Digite a dosagem">
 									</td>
 
 									<td>
-										<input type="text" class="form-control" name="intervalo" placeholder="Digite o intervalo de medicação">
+										<input type="text" class="form-control" name="intervalo[]" placeholder="Digite o intervalo de medicação">
 									</td>
 
 									<td>
-										<select name="tipoIntervalo" class="form-control">
+										<select name="tipoIntervalo[]" class="form-control">
 											<option>Selecione o tipo de intervalo...</option>
 											<option>minutos</option>
 											<option>horas</option>
@@ -116,11 +113,13 @@
 											<option>senamas</option>
 										</select>
 									</td>
+									<td>
+										<button type="button" class="btn btn-primary" id="add_campo"> + </button>
+									</td>
 								</tr> </div>
-							</div>
 						</table>
 					</div>
-					<button type="button" class="btn btn-primary" id="add_campo"> + </button>
+					<br />
 
 					<button type="submit" class="btn btn-primary" name="btn_cadastra">Cadastrar</button>
 					<button type="submit" class="btn btn-primary" name="btn_cancela">Cancelar</button>
@@ -131,10 +130,10 @@
 					//https://api.jquery.com/click/
             		$("#add_campo").click(function () {
 					//https://api.jquery.com/append/
-                		$("#formMedic").append('<div class="form-group"> <table>'+ 
+                		$("#receituario").append(
 								'<tr>' +
 									'<td>'+
-										'<select name="nomeMedicamento" class="form-control">'+
+										'<select name="idMedicamento[]" class="form-control">'+
 										'<option>Selecione o medicamento...</option>'+
 										'<?php
 											$result_remedios = "SELECT * FROM medicamentos";
@@ -145,15 +144,15 @@
 									'</td>'+
 
 									'<td>'+
-										'<input type="text" class="form-control" name="dosagem" placeholder="Digite a dosagem">'+
+										'<input type="text" class="form-control" name="dosagem[]" placeholder="Digite a dosagem">'+
 									'</td>'+
 
 									'<td>'+
-										'<input type="text" class="form-control" name="intervalo" placeholder="Digite o intervalo de medicação">'+
+										'<input type="text" class="form-control" name="intervalo[]" placeholder="Digite o intervalo de medicação">'+
 									'</td>'+
 
 									'<td>'+
-										'<select name="tipoIntervalo" class="form-control">'+
+										'<select name="tipoIntervalo[]" class="form-control">'+
 											'<option>Selecione o tipo de intervalo...</option>'+
 											'<option>minutos</option>'+
 											'<option>horas</option>' +
@@ -161,7 +160,8 @@
 											'<option>senamas</option>'+
 										'</select>'+
 									'</td>'+
-								'</tr> </table> </div>');
+									'<td><button type="button" class="btn btn-primary" onclick="$(this).parent().parent().remove()"> - </button></td>'+
+								'</tr>');
             		});
 				</script>
 			</div>
