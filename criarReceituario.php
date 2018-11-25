@@ -120,7 +120,11 @@
 						</table>
 					</div>
 					<br />
-
+					<div>
+						Observações:
+						<textarea class="form-control" placeholder="Observações" cols="50" rows="3" name="observacoes"></textarea>
+					</div>
+					<br />
 					<button type="submit" class="btn btn-primary" name="btn_cadastra">Cadastrar</button>
 					<button type="submit" class="btn btn-primary" name="btn_cancela">Cancelar</button>
 					<!-- Parte a ser mudada!! -->
