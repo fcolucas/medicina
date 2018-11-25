@@ -9,14 +9,42 @@
 <html lang="pt-br">
 	<head>
 		<meta charset="UTF-8">
-
 		<title>Consultório Médico - Cadastro de Paciente</title>
-		
 		<!-- jquery - link cdn -->
 		<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-
 		<!-- bootstrap - link cdn -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+		<script>
+		$(document).ready(function(){
+			//verificar se os campos de usuário e senha foram devidamente preenchidos
+			$('#btn_cadastra').click(function(){
+				var campo_vazio = false;
+
+				if($('#campo_nome').val() == ''){
+					$('#campo_nome').css({'border-color': '#A94442'});
+					campo_vazio = true;
+				} else {
+					$('#campo_nome').css({'border-color': '#CCC'});
+				}
+
+				if($('#campo_data').val() == ''){
+					$('#campo_data').css({'border-color': '#A94442'});
+					campo_vazio = true;
+				} else {
+					$('#campo_data').css({'border-color': '#CCC'});
+				}
+
+				if($('#campo_sexo').val() == 'N'){
+					$('#campo_sexo').css({'border-color': '#A94442'});
+					campo_vazio = true;
+				} else {
+					$('#campo_sexo').css({'border-color': '#CCC'});
+				}
+
+				if(campo_vazio) return false;
+			});
+		});				
+		</script>
 	
 	</head>
 
@@ -59,20 +87,23 @@
 	    		<br />
 				<form method="post" action="cadPacientes.php" id="cadastraPaciente">
 					<div class="form-group">
-						Nome do Paciente: <input type="text" class="form-control" name="nomePaciente" placeholder="Digite o nome">
+						Nome do Paciente: <input type="text" class="form-control" id="campo_nome" name="nomePaciente" placeholder="Digite o nome">
 					</div>
 
 					<div class="form-group">
-						Data de Nascimento: <input type="date" class="form-control" name="dataNascimento" >
+						Data de Nascimento: <input type="date" class="form-control" id="campo_data" name="dataNascimento" >
 					</div>
 
 					<div class="form-group">
 						Sexo:
-						<input type="radio" name="sexo" value="M" />Masculino
-						<input type="radio" name="sexo" value="F" />Feminino <br/>
+						<select name="sexo" id="campo_sexo" class="form-control">
+							<option value="N">Selecione sexo...</option>
+							<option value="M">Masculino</option>
+							<option value="F">Feminino</option>
+						</select>
 					</div>
 					
-					<button type="submit" class="btn btn-primary" name="btn_cadastra">Cadastrar</button>
+					<button type="submit" class="btn btn-primary" id="btn_cadastra" name="btn_cadastra">Cadastrar</button>
 					<button type="submit" class="btn btn-primary" name="btn_cancela">Cancelar</button>	
 				</form>
 			</div>

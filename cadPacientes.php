@@ -27,6 +27,4 @@
 	        echo "Erro ao registrar o usuário!";
 	    }
 	}
-
-
 ?>
