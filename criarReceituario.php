@@ -20,18 +20,65 @@
 		<!-- bootstrap - link cdn -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <script type="text/javascript">
+        $(document).ready(function(){
+			//verificar se os campos de usuário e senha foram devidamente preenchidos
+			$('#btn_cadastra').click(function(){
+				var campo_vazio = false;
+				if($('#campo_paciente').val() == ''){
+					$('#campo_paciente').css({'border-color': '#A94442'});
+					campo_vazio = true;
+				} else {
+					$('#campo_paciente').css({'border-color': '#CCC'});
+				}
+
+				if($('#campo_medicamento').val() == ''){
+					$('#campo_medicamento').css({'border-color': '#A94442'});
+					campo_vazio = true;
+				} else {
+					$('#campo_medicamento').css({'border-color': '#CCC'});
+				}
+
+				if($('#campo_dosagem').val() == ''){
+					$('#campo_dosagem').css({'border-color': '#A94442'});
+					campo_vazio = true;
+				} else {
+					$('#campo_dosagem').css({'border-color': '#CCC'});
+				}
+
+				if($('#campo_intervalo').val() == ''){
+					$('#campo_intervalo').css({'border-color': '#A94442'});
+					campo_vazio = true;
+				} else {
+					$('#campo_intervalo').css({'border-color': '#CCC'});
+				}
+
+				if($('#campo_tipoInt').val() == ''){
+					$('#campo_tipoInt').css({'border-color': '#A94442'});
+					campo_vazio = true;
+				} else {
+					$('#campo_tipoInt').css({'border-color': '#CCC'});
+				}
+
+				if(campo_vazio) return false;
+			});
+		});				
+		</script>
 	
 	</head>
 
 	<body>
-
 		<nav class="navbar navbar-default navbar-static-top">
 		      <div class="container">
-		        <div class="navbar-header">
-		          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-		            <span class="sr-only">Toggle navigation</span>
-		          </button>
-		        </div>
+        		<div class="navbar-header">
+		          	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+		            	<span class="sr-only">Toggle navigation</span>
+		            	<span class="icon-bar"></span>
+		            	<span class="icon-bar"></span>
+		            	<span class="icon-bar"></span>
+		          	</button>
+        		</div>
 		        
 		        <div id="navbar" class="navbar-collapse collapse">
 		          <ul class="nav navbar-nav navbar-right">
@@ -51,19 +98,16 @@
 		      </div>
 		    </nav>
 
-
 	    <div class="container">
-	    	
-	    	<br />
-	    	<div class="col-md-4"></div>
-	    	<div>
-	    		<h2>Receituário</h2>
-	    		<br />
+	    	<div class="col-md-2"></div>
+	    	<div class="col-md-8">
+	    	<h2>Receituário</h2>
+	    	<div class="col-md-14 panel panel-default">
 				<form method="post" action="validaReceituario.php" id="criaReceituario">
-					<div class="form-group">
-						Nome do Paciente:
-						<select name="idPaciente" class="form-control">
-							<option>Selecione o Paciente...</option>
+					<div class="form-group panel-body">
+						<label>Nome do Paciente:</label>
+						<select name="idPaciente" id="campo_paciente" class="form-control">
+							<option value="">Selecione o Paciente...</option>
 							<?php
 							$idmedico = $_SESSION['idmedicos'];
 							$result_pacientes = "SELECT * FROM pacientes WHERE medicos_idmedicos = $idmedico";
@@ -75,7 +119,7 @@
 						</select>
 					</div>
 
-					<div id='corpoReceita'>
+					<div id='corpoReceita' class="panel-body input-group">
 						<table id='receituario'>
 								<tr>
 									<th> Medicamento </th>
@@ -86,8 +130,8 @@
 								</tr>
 								<tr>
 									<td>
-										<select name="idMedicamento[]" class="form-control">
-										<option>Selecione o medicamento...</option>
+										<select name="idMedicamento[]" id="campo_medicamento" class="form-control">
+										<option value="">Selecione o medicamento...</option>
 										<?php
 											$result_remedios = "SELECT * FROM medicamentos";
 											$res = mysqli_query($link, $result_remedios) or die("Erro na consulta!");
@@ -97,16 +141,16 @@
 									</td>
 
 									<td>
-										<input type="text" class="form-control" name="dosagem[]" placeholder="Digite a dosagem">
+										<input type="text" class="form-control" name="dosagem[]" id="campo_dosagem" placeholder="Digite a dosagem">
 									</td>
 
 									<td>
-										<input type="text" class="form-control" name="intervalo[]" placeholder="Digite o intervalo de medicação">
+										<input type="text" class="form-control" name="intervalo[]" id="campo_intervalo" placeholder="Digite o intervalo de medicação">
 									</td>
 
 									<td>
-										<select name="tipoIntervalo[]" class="form-control">
-											<option>Selecione o tipo de intervalo...</option>
+										<select name="tipoIntervalo[]" id="campo_tipoInt" class="form-control">
+											<option value="">Selecione o tipo de intervalo...</option>
 											<option>minutos</option>
 											<option>horas</option>
 											<option>dias</option>
@@ -114,22 +158,24 @@
 										</select>
 									</td>
 									<td>
-										<button type="button" class="btn btn-primary" id="add_campo"> + </button>
+										<span class="input-group-btn">
+											<button type="button" class="btn btn-default" id="add_campo"> + </button>
+										</span>
 									</td>
-								</tr> </div>
-						</table>
+								</tr> </table>
 					</div>
-					<br />
-					<div>
-						Observações:
+						
+					<div class="form-group panel-body">
+						<label>Observações:</label>
 						<textarea class="form-control" placeholder="Observações" cols="50" rows="3" name="observacoes"></textarea>
 					</div>
-					<br />
-					<button type="submit" class="btn btn-primary" name="btn_cadastra">Cadastrar</button>
-					<button type="submit" class="btn btn-primary" name="btn_cancela">Cancelar</button>
-					<!-- Parte a ser mudada!! -->
 
+					<div class="form-group panel-body">
+						<button type="submit" class="btn btn-primary" id="btn_cadastra" name="btn_cadastra">Cadastrar</button>
+						<button type="submit" class="btn btn-primary" name="btn_cancela">Cancelar</button>
+					</div>
 				</form>
+
 				<script>
 					//https://api.jquery.com/click/
             		$("#add_campo").click(function () {
@@ -137,8 +183,8 @@
                 		$("#receituario").append(
 								'<tr>' +
 									'<td>'+
-										'<select name="idMedicamento[]" class="form-control">'+
-										'<option>Selecione o medicamento...</option>'+
+										'<select name="idMedicamento[]" id="campo_medicamento" class="form-control">'+
+										'<option value="">Selecione o medicamento...</option>'+
 										'<?php
 											$result_remedios = "SELECT * FROM medicamentos";
 											$res = mysqli_query($link, $result_remedios) or die("Erro na consulta!");
@@ -148,26 +194,30 @@
 									'</td>'+
 
 									'<td>'+
-										'<input type="text" class="form-control" name="dosagem[]" placeholder="Digite a dosagem">'+
+										'<input type="text" class="form-control" id="campo_dosagem" name="dosagem[]" placeholder="Digite a dosagem">'+
 									'</td>'+
 
 									'<td>'+
-										'<input type="text" class="form-control" name="intervalo[]" placeholder="Digite o intervalo de medicação">'+
+										'<input type="text" class="form-control" id="campo_intervalo" name="intervalo[]" placeholder="Digite o intervalo de medicação">'+
 									'</td>'+
 
 									'<td>'+
-										'<select name="tipoIntervalo[]" class="form-control">'+
-											'<option>Selecione o tipo de intervalo...</option>'+
+										'<select name="tipoIntervalo[]" id="campo_tipoInt" class="form-control">'+
+											'<option value="">Selecione o tipo de intervalo...</option>'+
 											'<option>minutos</option>'+
 											'<option>horas</option>' +
 											'<option>dias</option>' +
 											'<option>senamas</option>'+
 										'</select>'+
 									'</td>'+
-									'<td><button type="button" class="btn btn-primary" onclick="$(this).parent().parent().remove()"> - </button></td>'+
+									'<td>'+
+									'<button type="button" class="btn btn-default" onclick="$(this).parent().parent().remove()"> - </button>'+
+									'</td>'+
 								'</tr>');
             		});
 				</script>
 			</div>
+		</div>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	</body>
 </html>
