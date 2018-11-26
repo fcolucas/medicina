@@ -77,10 +77,11 @@
 		      </div>
 		    </nav>
 		    <div class="container">
-		    	<div class="col-md-4"></div>
+		    	<div class="col-md-3"></div>
 		    	<div class="col-md-8">
 		    		<h2> Paciente cadastrado com sucesso! </h2>
 		    		<div class="col-md-8 panel panel-default">
+		    			<br />
 			    		<?php
 			    			$sql = "SELECT * FROM pacientes WHERE (idpacientes = '$id')";
 			    			$res = mysqli_query($link, $sql);
