@@ -4,21 +4,23 @@
 
 	if(isset($_SESSION['logado']) && $_SESSION['logado']==true){}
 	else header('Location: index.php');
+	
+	$idmedicos = $_SESSION['idmedicos'];
+
+	$objDb = new db();
+	$link = $objDb->conecta_mysql();
 ?>
 
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="eng">
 	<head>
 		<meta charset="UTF-8">
 
 		<title>Lista de Pacientes</title>
-
-
-			<!-- jquery - link cdn -->
-			<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-
-			<!-- bootstrap - link cdn -->
-			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+		<link href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet">
+		<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+		
 	</head>
 	<body>	        
         <nav class="navbar navbar-default navbar-static-top">
@@ -45,81 +47,95 @@
 		          </ul>
 		        </div> <!--.nav-collapse -->
 		      </div>
-		    </nav>
-	
+		</nav>
 		<div class="container">
-	    	
-	    	<br /> <br />
-	    	
-	    	<div class="row-md-4">
-	    		<h1>Lista de Pacientes</h1>
-	    		<br />
-				<form method="POST" action="consultas.php">
-					Buscar: <input type="text" class="form-control" name="buscar" placeholder="BUSCAR">
-					<button type="submit" class="btn btn-primary" name="btn_ok">OK</button>
-					<br /><br />
-
-				</form>
+	    	<div class="col-md-6">
+		    	<h2> Meus Pacientes </h2>
+				<table id="table_pacientes">
+					<thead>
+					<tr>
+						<th>ID</th>
+						<th>Nome</th>
+						<th>Data de Nascimento</th>
+						<th>Sexo</th>
+						<th>Ações</th>
+					</tr>
+					</thead>
+					<tbody>
+					<?php
+						$result_pacientes = "SELECT * FROM pacientes WHERE (medicos_idmedicos = $idmedicos)";
+						$res = mysqli_query($link, $result_pacientes);
+						while($regP = mysqli_fetch_assoc($res)){
+							echo "<tr>";
+							echo "<td>".$regP['idpacientes']."</td>";
+							echo "<td>".$regP['nomePaciente']."</td>";
+							echo "<td>".$regP['dataNascimento']."</td>";
+							echo "<td>".$regP['sexo']."</td>";
+							echo "<td> <a href='listaPacientes.php?ID=".$regP['idpacientes']."'>Listar Receitas</a> </td>";
+							echo "</tr>";
+						}
+					?>
+					</tbody>
+				</table>
 			</div>
-		</form>
+			<div class="col-md-6">
+	    		<?php
+	    			$id = isset($_GET['ID']) ? $_GET['ID'] : 0;
+	    			if($id > 0){ ?>
+			    		<h2> Receitas </h2>
+						<table id="table_receituarios">
+							<thead>
+							<tr>
+								<th>ID Receita</th>
+								<th>Data</th>
+								<th>Hora</th>
+								<th>Ações</th>
+							</tr>
+							</thead>
+							<tbody>
+							<?php
+								$result_receituarios = "SELECT idreceituarios, data, hora FROM receituarios WHERE (pacientes_idpacientes = $id)";
+								$res = mysqli_query($link, $result_receituarios);
+								while($regP = mysqli_fetch_assoc($res)){
+									echo "<tr>";
+									echo "<td>".$regP['idreceituarios']."</td>";
+									echo "<td>".$regP['data']."</td>";
+									echo "<td>".$regP['hora']."</td>";
+									echo "<td> <a href='getPrescricao.php?IDRec=".$regP['idreceituarios']."'>Listar Prescriçâo</a> </td>";
+									echo "</tr>";
+								}
+							?>
+							</tbody>
+						</table>
+					<?php } ?>
+	    	</div>
+			<br/>
+		</div>
 
-		<?php
-
-			//Receber o número da página
-			$pagina_atual = filter_input(INPUT_GET, 'pagina',FILTER_SANITIZE_NUMBER_INT);
-
-			$pagina = (!empty($pagina_atual)) ? $pagina_atual : 1;
-
-			//Setar a quantidade de itens por página
-			$qtd_result_pg = 4;
-
-			//Início da vizualização
-			$inicio = ($qtd_result_pg * $pagina) - $qtd_result_pg;
-
-			$idmedicos = $_SESSION['idmedicos'];
-			$result_pacientes = "SELECT * FROM pacientes WHERE (medicos_idmedicos = $idmedicos) LIMIT $inicio, $qtd_result_pg";
-
-			$objDb = new db();
-			$link = $objDb->conecta_mysql();
-
-			$resultado_pacientes = mysqli_query($link, $result_pacientes);
-			while ($row_paciente = mysqli_fetch_assoc($resultado_pacientes)){
-				echo "ID: " . $row_paciente['idpacientes'] . "<br>";
-				echo "Nome: " . $row_paciente['nomePaciente'] . "<br>";
-				echo "Data de nascimento: " . $row_paciente['dataNascimento'] . "<br>";
-				echo "Sexo: " . $row_paciente['sexo'] . "<br><hr>";
-			}
-
-			//Paginação - Somar a quantidade de usuários
-			$result_pg = "SELECT COUNT(idpacientes) AS num_result FROM pacientes";
-
-			$resultado_pg = mysqli_query($link, $result_pg);
-			$row_pg = mysqli_fetch_assoc($resultado_pg);
-			//echo $row_pg['num_result'];
-			//Quantidade de página
-			$quantidade_pg = ceil($row_pg['num_result'] / $qtd_result_pg);
-
-			//Limitar os links antes e depois
-			$max_links = 2;
-
-			echo "<a href='listaPacientes.php?pagina=1'>Primeira</a> ";
-
-			for($pag_ant = $pagina - $max_links; $pag_ant <= $pagina - 1; $pag_ant++){
-				if($pag_ant >= 1){
-					echo "<a href='listaPacientes.php?pagina=$pag_ant'>$pag_ant</a> ";
-				}
-			}
-
-			echo "$pagina ";
-			for($pag_dep = $pagina + 1; $pag_dep <= $pagina + $max_links; $pag_dep++){
-				if($pag_dep <= $quantidade_pg){
-					echo "<a href='listaPacientes.php?pagina=$pag_dep'>$pag_dep</a> ";
-				}
-			}
-
-			echo "<a href='listaPacientes.php?pagina=$quantidade_pg'>Ultima</a> ";
-
-		?>
+  		<script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+		<script>
+		$(document).ready(function(){
+		  $('#table_pacientes').DataTable({
+		      "language": {
+		            "lengthMenu": "Mostrando _MENU_ registros por página",
+		            "zeroRecords": "Nada encontrado",
+		            "info": "Mostrando página _PAGE_ de _PAGES_",
+		            "infoEmpty": "Nenhum registro disponível",
+		            "infoFiltered": "(filtrado de _MAX_ registros no total)"
+		        }
+		    });
+		  $('#table_receituarios').DataTable({
+		      "language": {
+		            "lengthMenu": "Mostrando _MENU_ registros por página",
+		            "zeroRecords": "Nada encontrado",
+		            "info": "Mostrando página _PAGE_ de _PAGES_",
+		            "infoEmpty": "Nenhum registro disponível",
+		            "infoFiltered": "(filtrado de _MAX_ registros no total)"
+		        }
+		    });
+		});
+		</script>
 
 	</body>
 
