@@ -49,10 +49,9 @@
 	    </div>
 	</nav>
 	    <div class="container">
-	    	
-	    	<br /><br />
-
+	    	<div class="col-md-4"> </div>
 	    	<div class="col-md-6">
+	    		<br/>
 	    		<h2> Bem vindo(a), <?= $_SESSION['nomeMedico'] ?> </h2>
 			</div>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>

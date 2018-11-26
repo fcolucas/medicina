@@ -39,21 +39,45 @@
 		</script>
 </head>
 <body>
-	<h1>Controle Médico</h1>
-		<div class="col-md-12">
-			<form method="post" action="login.php" id="formLogin">
-				<div class="form-group">
-					<input type="text" class="form-control" id="campo_usuario" name="usuario" placeholder="Usuário" style="width: 176px; height: 39px;" />
+	<nav class="navbar navbar-default navbar-static-top">
+			<div class="container">
+			<div class="navbar-header">
+	          	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+	            	<span class="sr-only">Toggle navigation</span>
+	            	<span class="icon-bar"></span>
+	            	<span class="icon-bar"></span>
+	            	<span class="icon-bar"></span>
+	          	</button>
+        	</div>
+
+			<div id="navbar" class="navbar-collapse collapse">
+			</div> <!--.nav-collapse -->
+			</div>
+		    </nav>
+
+
+	    <div class="container">
+	    	<div class="col-md-3"></div>
+	    	<div class="col-md-8">
+		    	<h2>Controle Médico</h2>
+		    	<div class="col-md-8 panel panel-default">
+					<form method="post" action="login.php" id="formLogin">
+						<div class="form-group panel-body">
+							<input type="text" class="form-control" id="campo_usuario" name="usuario" placeholder="Usuário"/>
+						</div>
+						<div class="form-group panel-body">
+							<input type="password" class="form-control red" id="campo_senha" name="senha" placeholder="Senha"/>
+						</div>
+						<div class="form-group panel-body">
+							<button type="buttom" class="btn btn-primary" name="btn" id="btn_login">Entrar</button>
+						</div>
+					</form>
+					<?php
+						if($erro == 1){
+							echo '<font color="#FF0000">Usuário e/ou senha inválido(s)</font>';
+						} ?>
 				</div>
-				<div class="form-group">
-					<input type="password" class="form-control red" id="campo_senha" name="senha" placeholder="Senha" style="width: 176px; height: 39px;" />
-				</div>
-				<button type="buttom" class="btn btn-primary" name="btn" id="btn_login">Entrar</button>			
-			</form>
-			<?php
-				if($erro == 1){
-					echo '<font color="#FF0000">Usuário e/ou senha inválido(s)</font>';
-				}
-			?>
-		</form>
+			</div>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	</body>
 </html>
