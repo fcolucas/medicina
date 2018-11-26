@@ -102,7 +102,7 @@
 	    	<div class="col-md-2"></div>
 	    	<div class="col-md-8">
 	    	<h2>Receituário</h2>
-	    	<div class="col-md-14 panel panel-default">
+	    	<div class="col-md-12 panel panel-default">
 				<form method="post" action="validaReceituario.php" id="criaReceituario">
 					<div class="form-group panel-body">
 						<label>Nome do Paciente:</label>
@@ -121,6 +121,7 @@
 
 					<div id='corpoReceita' class="panel-body input-group">
 						<table id='receituario'>
+							<thead>
 								<tr>
 									<th> Medicamento </th>
 									<th> Dosagem </th>
@@ -128,6 +129,8 @@
 									<th> Tipo de Intervalo </th>
 									<th></th>
 								</tr>
+							</thead>
+							<tbody>
 								<tr>
 									<td>
 										<select name="idMedicamento[]" id="campo_medicamento" class="form-control">
@@ -158,11 +161,10 @@
 										</select>
 									</td>
 									<td>
-										<span class="input-group-btn">
-											<button type="button" class="btn btn-default" id="add_campo"> + </button>
-										</span>
+										<button type="button" class="btn btn-primary" id="add_campo"> + </button>
 									</td>
-								</tr> </table>
+								</tr> 
+							</tbody></table>
 					</div>
 						
 					<div class="form-group panel-body">
@@ -211,7 +213,7 @@
 										'</select>'+
 									'</td>'+
 									'<td>'+
-									'<button type="button" class="btn btn-default" onclick="$(this).parent().parent().remove()"> - </button>'+
+									'<button type="button" class="btn btn-primary" onclick="$(this).parent().parent().remove()"> - </button>'+
 									'</td>'+
 								'</tr>');
             		});
