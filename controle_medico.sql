@@ -21,7 +21,7 @@ USE controle_medico;
 --
 
 CREATE TABLE `medicamentos` (
-  `idmedicamentos` int(11) NOT NULL AUTO_INCREMENT,
+  `idmedicamentos` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `nomeMedicamento` varchar(50) NOT NULL,
   `unidade` varchar(4) NOT NULL,
   `quantidade` float NOT NULL,
@@ -70,7 +70,7 @@ INSERT INTO `medicamentos` (`idmedicamentos`, `nomeMedicamento`, `unidade`, `qua
 --
 
 CREATE TABLE `medicos` (
-  `idmedicos` int(11) NOT NULL AUTO_INCREMENT,
+  `idmedicos` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `nomeMedico` varchar(50) NOT NULL,
   `usuario` varchar(50) NOT NULL,
   `senha` varchar(32) NOT NULL
@@ -91,7 +91,7 @@ INSERT INTO `medicos` (`idmedicos`, `nomeMedico`, `usuario`, `senha`) VALUES
 --
 
 CREATE TABLE `pacientes` (
-  `idpacientes` int(11) NOT NULL AUTO_INCREMENT,
+  `idpacientes` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `medicos_idmedicos` int(11) NOT NULL,
   `nomePaciente` varchar(50) NOT NULL,
   `dataNascimento` date NOT NULL,
@@ -105,7 +105,7 @@ CREATE TABLE `pacientes` (
 --
 
 CREATE TABLE `receituarios` (
-  `idreceituarios` int(11) NOT NULL AUTO_INCREMENT,
+  `idreceituarios` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `pacientes_idpacientes` int(11) NOT NULL,
   `medicos_idmedicos` int(11) NOT NULL,
   `data` date NOT NULL,
@@ -119,7 +119,7 @@ CREATE TABLE `receituarios` (
 --
 
 CREATE TABLE `prescricao` (
-  `sequence` int(11) NOT NULL AUTO_INCREMENT,
+  `sequence` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `receituarios_idreceituarios` int(11) NOT NULL,
   `medicamentos_idmedicamentos` int(11) NOT NULL,
   `dosagem` float NOT NULL,
@@ -129,29 +129,15 @@ CREATE TABLE `prescricao` (
 
 -- --------------------------------------------------------
 --
--- Indexes for table `medicamentos`
---
-ALTER TABLE `medicamentos`
-  ADD PRIMARY KEY (`idmedicamentos`);
-
---
--- Indexes for table `medicos`
---
-ALTER TABLE `medicos`
-  ADD PRIMARY KEY (`idmedicos`);
-
---
 -- Indexes for table `pacientes`
 --
 ALTER TABLE `pacientes`
-  ADD PRIMARY KEY (`idpacientes`),
   ADD KEY `medicos_idmedicos` (`medicos_idmedicos`);
 
 --
 -- Indexes for table `prescricao`
 --
 ALTER TABLE `prescricao`
-  ADD PRIMARY KEY (`sequence`),
   ADD KEY `receituarios_idreceituarios` (`receituarios_idreceituarios`),
   ADD KEY `medicamentos_idmedicamentos` (`medicamentos_idmedicamentos`);
 
@@ -159,7 +145,6 @@ ALTER TABLE `prescricao`
 -- Indexes for table `receituarios`
 --
 ALTER TABLE `receituarios`
-  ADD PRIMARY KEY (`idreceituarios`),
   ADD KEY `pacientes_idpacientes` (`pacientes_idpacientes`),
   ADD KEY `medicos_idmedicos` (`medicos_idmedicos`);
 
