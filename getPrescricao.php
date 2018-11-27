@@ -53,9 +53,9 @@
 	      </div>
 	    </nav>
 	    <div class="container">
-	    	<div class="col-md-3"></div>
-	    	<div class="col-md-8">
-		    	<div class="col-md-8 panel panel-default">
+	    	<div class="col-md-1"></div>
+	    	<div class="col-md-10">
+		    	<div class="col-md-12 panel panel-default"> <br/>
 		    		<?php
 		    			$sqlR = "SELECT nomePaciente, data, hora, observacoes FROM pacientes, receituarios WHERE (idpacientes = pacientes_idpacientes) AND (idreceituarios = $id)";
 						$regR = mysqli_fetch_assoc(mysqli_query($link, $sqlR));
@@ -67,17 +67,19 @@
 						<thead>
 						<tr>
 							<th>Medicamento</th>
+							<th>Descrição</th>
 							<th>Dosagem</th>
 							<th>Unidade</th>
 							<th>Intervalo</th>
 						</tr> </thead>
 						<tbody>
 						<?php
-							$sqlP = "SELECT nomeMedicamento, dosagem, unidade, intervalo, tipoIntervalo FROM medicamentos, prescricao WHERE (receituarios_idreceituarios = $id) AND (idmedicamentos = medicamentos_idmedicamentos)";
+							$sqlP = "SELECT nomeMedicamento, quantidade, descricao, dosagem, unidade, intervalo, tipoIntervalo FROM medicamentos, prescricao WHERE (receituarios_idreceituarios = $id) AND (idmedicamentos = medicamentos_idmedicamentos)";
 							$res = mysqli_query($link, $sqlP);
 							while($regP = mysqli_fetch_assoc($res)){
 								echo "<tr>";
-								echo "<td>".$regP['nomeMedicamento']."</td>";
+								echo "<td>".$regP['nomeMedicamento']." ".$regP['quantidade']." ".$regP['unidade']."</td>";
+								echo "<td>".$regP['descricao']."</td>";
 								echo "<td>".$regP['dosagem']."</td>";
 								echo "<td>".$regP['unidade']."</td>";
 								echo "<td>".$regP['intervalo']." ".$regP['tipoIntervalo']."</td>";
@@ -88,7 +90,7 @@
 					<label>Observações: </label><?= $regR['observacoes']?>
 					<div class="form-group panel-body">
 						<form method='post' action="listaPacientes.php">
-							<button type="submit" class="btn btn-primary" name="voltar">Voltar para Listar Pacientes</button>
+							<button type="submit" class="btn btn-primary" name="voltar">Voltar para Lista de Pacientes</button>
 						</form>
 					</div>
 				</div>

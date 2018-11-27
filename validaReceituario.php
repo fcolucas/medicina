@@ -96,8 +96,8 @@
 	    <div class="container">
 	    	<div class="col-md-3"></div>
 	    	<div class="col-md-8">
-		    	<h2> Prescrição cadastrada com Sucesso! </h2>
-		    	<div class="col-md-8 panel panel-default">
+		    	<h3> Prescrição cadastrada com sucesso! </h3>
+		    	<div class="col-md-8 panel panel-default"> <br/>
 		    		<?php
 		    			$sqlR = "SELECT nomePaciente, data, hora, observacoes FROM pacientes, receituarios WHERE (idpacientes = pacientes_idpacientes) AND (idreceituarios = $id)";
 						$regR = mysqli_fetch_assoc(mysqli_query($link, $sqlR));
@@ -105,7 +105,7 @@
 		    		<label>Nome: </label><?= $regR['nomePaciente'] ?> <br />
 		    		<label>Data: </label><?= date($regR['data'])?> <br />
 					<label>Hora: </label><?= $regR['hora']?> <br />
-					<table class="col-md-8 panel-body input-group">
+					<table class="col-md-10 panel-body input-group">
 						<tr>
 							<th>Medicamento</th>
 							<th>Dosagem</th>
@@ -113,11 +113,11 @@
 							<th>Intervalo</th>
 						</tr>
 						<?php
-							$sqlP = "SELECT nomeMedicamento, dosagem, unidade, intervalo, tipoIntervalo FROM medicamentos, prescricao WHERE (receituarios_idreceituarios = $id) AND (idmedicamentos = medicamentos_idmedicamentos)";
+							$sqlP = "SELECT nomeMedicamento, quantidade, dosagem, unidade, intervalo, tipoIntervalo FROM medicamentos, prescricao WHERE (receituarios_idreceituarios = $id) AND (idmedicamentos = medicamentos_idmedicamentos)";
 							$res = mysqli_query($link, $sqlP);
 							while($regP = mysqli_fetch_assoc($res)){
 								echo "<tr>";
-								echo "<td>".$regP['nomeMedicamento']."</td>";
+								echo "<td>".$regP['nomeMedicamento']." ".$regP['quantidade']." ".$regP['unidade']."</td>";
 								echo "<td>".$regP['dosagem']."</td>";
 								echo "<td>".$regP['unidade']."</td>";
 								echo "<td>".$regP['intervalo']." ".$regP['tipoIntervalo']."</td>";

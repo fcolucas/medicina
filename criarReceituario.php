@@ -139,7 +139,7 @@
 											$result_remedios = "SELECT * FROM medicamentos";
 											$res = mysqli_query($link, $result_remedios) or die("Erro na consulta!");
 											while($row_remedios = mysqli_fetch_array($res)){ ?>
-												<option value='<?= $row_remedios['idmedicamentos']; ?>'> <?= $row_remedios['nomeMedicamento']; ?></option> <?php } ?>
+												<option value='<?= $row_remedios['idmedicamentos']; ?>'> <?= $row_remedios['nomeMedicamento']." ".$row_remedios['quantidade']." ".$row_remedios['unidade']; ?></option> <?php } ?>
 										</select> 
 									</td>
 
@@ -191,7 +191,7 @@
 											$result_remedios = "SELECT * FROM medicamentos";
 											$res = mysqli_query($link, $result_remedios) or die("Erro na consulta!");
 											while($row_remedios = mysqli_fetch_assoc($res)){ ?>
-												<option value="<?= $row_remedios['idmedicamentos']; ?>"> <?= $row_remedios['nomeMedicamento']; ?></option> <?php } ?>'+
+												<option value="<?= $row_remedios['idmedicamentos']; ?>"> <?= $row_remedios['nomeMedicamento']." ".$row_remedios['quantidade']." ".$row_remedios['unidade']; ?></option> <?php } ?>'+
 										'</select>'+ 
 									'</td>'+
 
